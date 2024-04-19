@@ -32,6 +32,7 @@
     uid: "{{ item['uid'] }}"
     state: "{{ item['state'] }}"
     password: "{{ item['password'] }}"
+    local: true
   loop: "{{ epic_users }}"
 
 
@@ -650,6 +651,17 @@
     block: |
       Match LocalPort 2222
         ForceCommand /usr/libexec/openssh/sftp-server -d /epicfiles/
+
+      Match LocalPort 22 Group "epic employees"
+        ForceCommand /epic/bin/epicmenu.ts
+      #Match LocalPort 22 Group   "ctx epic text"
+      #  ForceCommand /epic/bin/epicmenu.is
+      Match LocalPort 22 Group   "ctx epic text"
+        ForceCommand /epic/bin/epicmenu
+
+      Match Group *,!wheel,!linuxadmins,!odbadmins,!epicssts,!dmngrp,!root,!system,!"epic server administrator"
+        ForceCommand exit 1
+
     path: /etc/ssh/sshd_config
   notify: Restart sshd
 
