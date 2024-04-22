@@ -651,8 +651,8 @@
     block: |
       Match LocalPort 2222
         ForceCommand /usr/libexec/openssh/sftp-server -d /epicfiles/
-
-
+      Match Group *,!wheel,!linuxadmins,!odbadmins,!epicssts,!dmngrp,!root,!system
+        ForceCommand exit 1
 
     path: /etc/ssh/sshd_config
   notify: Restart sshd
