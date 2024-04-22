@@ -1,17 +1,16 @@
-Ansible Role: Epic ODB
+# Ansible Role: Epic ODB
+
 ========
 ![Build Status](https://github.com/ImNtReal/ansible-role-epic_odb/actions/workflows/main.yml/badge.svg)
 
 This role will prepare RHEL servers to act as Epic ODB servers.
 
-Requirements
-------------
+## Requirements
 
 To run the role successfully against RHEL 8+ or Ubuntu, you will need to pre-install the epic-config package,
 or have it hosted on a repository already installed on the hosts.
 
-Role Variables
---------------
+## Role Variables
 
 Found in `defaults/main.yml` (can be overridden in inventory):
 
@@ -33,13 +32,11 @@ Variables set only in inventory:
     forced_epicusers: Users to be added to epicuser group
     epicuser_groups: Groups of users to be added to epicuser group
 
-Dependencies
-------------
+## Dependencies
 
 No other roles are required
 
-Example Playbook
-----------------
+## Example Playbook
 
 inventory:
 
@@ -67,6 +64,9 @@ inventory:
           - some_ad_user
 
         epicuser_groups:
+          - some_ad_group
+
+        iris_users:
           - some_ad_group
 
         odb_firewall_services:
@@ -115,12 +115,11 @@ playbook:
     - hosts: odb
       roles: epic_odb
 
-License
--------
+## License
 
 MIT
 
-Author Information
-------------------
+### Author Information
 
 Jameson Pugh <imntreal@gmail.com>
+Joseph Harry <findarato@gmail.com>
