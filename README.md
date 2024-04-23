@@ -53,6 +53,9 @@ inventory:
         nr_hugepages: 112763
 
         # These should be stored in a vault somewhere
+        # Quick note about generating passwords from plain text
+        # vault_epicadm"{{ 'Some-c00l-password' | ansible.builtin.password_hash(hashtype = 'sha512',salt = 'agoodpeppering') }}"
+        # This above will allow for generating the password 'On the fly' by allowing referncing it in the vault
         epic_passwords:
           epicadm: $6$CAuJvjioZaK6OfAI$hcU2HIzJG2e8ZaqcUATQ0UzFZPcFrOlUnLC7OV13Ect0A.KKVUC1lRK4KfF26u3r8iZClZOlREwhj4w5kQaVY/
           epicdmn: $6$W6CPWrIRuKp4VxDK$imCJgLaHLcvXXPx9EbPEalmIe5kBE9H6UbOuisfuuU4vwuFot9n7e7YQUUHnC41QkP3a4JUUtUVkWcsTtLynC1
@@ -63,11 +66,20 @@ inventory:
         forced_epicusers:
           - some_ad_user
 
-        epicuser_groups:
+        epicuser_groups: #be sure to double quote AD groups with spaces '"ad group"'
           - some_ad_group
 
         iris_users:
           - some_ad_group
+
+        epicmenu_group_exclusions # These groups do not get epic menu AND do not get blocked be sure to double quote AD groups with spaces '"ad group"'
+          - some_ad_group
+
+        epicmenu_exclusions: # These users do not get epic menu AND do not get blocked
+          - some_ad_user
+
+        # defaults to false Change to include epic suggested exit 1 for all not allowed
+        global_ssh_block: true
 
         odb_firewall_services:
           - name: epiccomm

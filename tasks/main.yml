@@ -651,8 +651,6 @@
     block: |
       Match LocalPort 2222
         ForceCommand /usr/libexec/openssh/sftp-server -d /epicfiles/
-      Match Group *,!wheel,!linuxadmins,!odbadmins,!epicssts,!dmngrp,!root,!system
-        ForceCommand exit 1
 
     path: /etc/ssh/sshd_config
   notify: Restart sshd
@@ -688,6 +686,17 @@
   notify: Restart sshd
   loop: "{{ epicmenu_users }}"
   when: epicmenu_users is defined
+
+- name: Set epic menus Block all with exclusions
+  ansible.builtin.blockinfile:
+    marker: "# {mark} ANSIBLE MANAGED BLOCK epicmenu for Block all"
+    block: |
+      Match LocalPort 22 Group *,!{{ epicmenu_group_exclusions | join(',!') }} User *,!{{ epicmenu_exclusions | join(',!') }}
+        ForceCommand exit 1
+    path: /etc/ssh/sshd_config
+  notify: Restart sshd
+  loop: "{{ epicmenu_users }}"
+  when: ( epicmenu_exclusions is defined or epicmenu_group_exclusions is defined ) AND global_ssh_block is true
 
 - name: Copy /usr/local/bin files
   ansible.builtin.copy:

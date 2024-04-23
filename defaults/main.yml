@@ -45,6 +45,8 @@ tuned_hugepages:
   hugepagesz: 1G
   hugepages: 93
 
+global_ssh_block: false
+
 epic_users:
   - user: epicadm
     comment: "Epic Admin"
