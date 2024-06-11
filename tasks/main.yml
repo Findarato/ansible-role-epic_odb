@@ -695,8 +695,9 @@
         ForceCommand exit 1
     path: /etc/ssh/sshd_config
   notify: Restart sshd
-  loop: "{{ epicmenu_users }}"
-  when: ( epicmenu_exclusions is defined or epicmenu_group_exclusions is defined ) AND global_ssh_block is true
+  when:
+    - epicmenu_exclusions is defined or epicmenu_group_exclusions is defined
+    - global_ssh_block is true
 
 - name: Copy /usr/local/bin files
   ansible.builtin.copy:
@@ -706,6 +707,26 @@
     group: root
     mode: "0755"
   with_fileglob: localbin/*
+
+- name: Copy VeeamBackup Pre script
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /usr/sbin/pre-freeze-script
+    owner: root
+    group: root
+    mode: "0700"
+  with_items:
+    - localbin/freeze_all_cache_instances.sh
+
+- name: Copy VeeamBackup post script
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /usr/sbin/post-thaw-script
+    owner: root
+    group: root
+    mode: "0700"
+  with_items:
+    - localbin/thaw_all_cache_instances.sh
 
 - name: Create manage_epicuser_group
   ansible.builtin.template:
