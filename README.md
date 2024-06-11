@@ -80,6 +80,10 @@ inventory:
 
         # defaults to false Change to include epic suggested exit 1 for all not allowed
         global_ssh_block: true
+        
+        # Defaults to false, change to true for Veeam native quiescence
+        # Copys the freeze and thaw all instances scripts to /usr/sbin/pre-freeze-script and /usr/sbin/post-thaw-script
+        veeam_backup: true 
 
         odb_firewall_services:
           - name: epiccomm
@@ -121,6 +125,7 @@ inventory:
             ports:
               - port: 65000
               - port: 65111
+
 
 playbook:
 
