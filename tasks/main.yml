@@ -665,17 +665,6 @@
   notify: Restart sshd
   when: epicmenu_exclusions is defined
 
-- name: Set epic menus for groups
-  ansible.builtin.blockinfile:
-    marker: "# {mark} ANSIBLE MANAGED BLOCK epicmenu for {{ item['group'] }}"
-    block: |
-      Match LocalPort 22 Group {{ item['group'] }} User *,!{{ epicmenu_exclusions | join(',!') }}
-        ForceCommand /epic/bin/{{ item['menu'] }}
-    path: /etc/ssh/sshd_config
-  notify: Restart sshd
-  loop: "{{ epicmenu_groups }}"
-  when: epicmenu_groups is defined
-
 - name: Set epic menus for users
   ansible.builtin.blockinfile:
     marker: "# {mark} ANSIBLE MANAGED BLOCK epicmenu for {{ item['user'] }}"
@@ -686,6 +675,17 @@
   notify: Restart sshd
   loop: "{{ epicmenu_users }}"
   when: epicmenu_users is defined
+
+- name: Set epic menus for groups
+  ansible.builtin.blockinfile:
+    marker: "# {mark} ANSIBLE MANAGED BLOCK epicmenu for {{ item['group'] }}"
+    block: |
+      Match LocalPort 22 Group {{ item['group'] }} User *,!{{ epicmenu_exclusions | join(',!') }}
+        ForceCommand /epic/bin/{{ item['menu'] }}
+    path: /etc/ssh/sshd_config
+  notify: Restart sshd
+  loop: "{{ epicmenu_groups }}"
+  when: epicmenu_groups is defined
 
 - name: Set epic menus Block all with exclusions
   ansible.builtin.blockinfile:
