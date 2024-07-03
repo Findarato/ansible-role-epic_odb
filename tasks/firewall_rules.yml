@@ -1,4 +1,5 @@
 ---
+
 - name: Set epic_firewall_short
   ansible.builtin.set_fact:
     epic_firewall_short: "{{ firewall_service['name'] }}"
