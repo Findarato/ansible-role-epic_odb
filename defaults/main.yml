@@ -105,3 +105,5 @@ epic_groups:
     gid: 10009
 
 veeam: false
+
+epic_sftp_path: /epicfiles/

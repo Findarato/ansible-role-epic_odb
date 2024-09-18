@@ -650,7 +650,7 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK SFTP Port"
     block: |
       Match LocalPort 2222
-        ForceCommand /usr/libexec/openssh/sftp-server -d /epicfiles/
+        ForceCommand /usr/libexec/openssh/sftp-server -d {{ epic_sftp_path}}
 
     path: /etc/ssh/sshd_config
   notify: Restart sshd
